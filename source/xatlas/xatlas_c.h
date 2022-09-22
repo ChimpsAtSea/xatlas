@@ -172,6 +172,7 @@ typedef struct
 	uint32_t indexCount;
 	int32_t indexOffset;
 	xatlasIndexFormat indexFormat;
+	bool allowZeroFaceArea;
 }
 xatlasUvMeshDecl;
 

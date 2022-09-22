@@ -9341,7 +9341,7 @@ AddMeshError AddUvMesh(Atlas *atlas, const UvMeshDecl &decl)
 				const internal::Vector2 &v3 = mesh->texcoords[tri[2]];
 				const float area = fabsf(((v2.x - v1.x) * (v3.y - v1.y) - (v3.x - v1.x) * (v2.y - v1.y)) * 0.5f);
 				if (area <= internal::kAreaEpsilon) {
-					ignore = true;
+					ignore = !decl.allowZeroFaceArea;
 					if (++warningCount <= kMaxWarnings)
 						XA_PRINT("   Zero area face: %d, indices (%d %d %d), area is %f\n", f, tri[0], tri[1], tri[2], area);
 				}

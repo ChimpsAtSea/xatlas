@@ -163,6 +163,7 @@ struct UvMeshDecl
 	uint32_t indexCount = 0;
 	int32_t indexOffset = 0; // optional. Add this offset to all indices.
 	IndexFormat indexFormat = IndexFormat::UInt16;
+	bool allowZeroFaceArea;
 };
 
 AddMeshError AddUvMesh(Atlas *atlas, const UvMeshDecl &decl);
