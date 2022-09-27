@@ -41,13 +41,14 @@ SOFTWARE.
 #endif
 
 #include <xatlas.h>
+#include <xatlas2.h>
 
 #define MODEL_PATH "../../models/"
 #define ASSERT(_condition) if (!(_condition)) { logf("[FAILED] '%s' %s %d\n", #_condition, __FILE__, __LINE__); assert(_condition); }
 
-static FILE *logFile = nullptr;
+static FILE* logFile = nullptr;
 
-int logf(const char *format, ...)
+int logf(const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
@@ -65,7 +66,7 @@ struct AtlasResult {
 	uint32_t chartCount;
 };
 
-bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
+bool generateAtlas(const char* filename, bool useUvMesh, AtlasResult* result)
 {
 	logf("%s\n", filename);
 	std::vector<tinyobj::shape_t> shapes;
@@ -80,10 +81,10 @@ bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
 		return false;
 	}
 	const clock_t start = clock();
-	xatlas::Atlas *atlas = xatlas::Create();
+	xatlas::Atlas* atlas = xatlas::Create();
 	int missingUvsCount = 0;
 	for (int i = 0; i < (int)shapes.size(); i++) {
-		const tinyobj::mesh_t &objMesh = shapes[i].mesh;
+		const tinyobj::mesh_t& objMesh = shapes[i].mesh;
 		if (useUvMesh) {
 			xatlas::UvMeshDecl decl;
 			if (!objMesh.texcoords.empty()) {
@@ -93,8 +94,9 @@ bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
 				decl.indexCount = (int)objMesh.indices.size();
 				decl.indexData = objMesh.indices.data();
 				decl.indexFormat = xatlas::IndexFormat::UInt32;
-				decl.faceMaterialData = (const uint32_t *)objMesh.material_ids.data();
-			} else {
+				decl.faceMaterialData = (const uint32_t*)objMesh.material_ids.data();
+			}
+			else {
 				missingUvsCount++;
 			}
 			xatlas::AddMeshError error = xatlas::AddUvMesh(atlas, decl);
@@ -103,7 +105,8 @@ bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
 				logf("   [FAILED]: Error adding UV mesh %d '%s': %s\n", i, shapes[i].name.c_str(), xatlas::StringForEnum(error));
 				return false;
 			}
-		} else {
+		}
+		else {
 			xatlas::MeshDecl decl;
 			decl.vertexCount = (int)objMesh.positions.size() / 3;
 			decl.vertexPositionData = objMesh.positions.data();
@@ -133,25 +136,27 @@ bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
 	const clock_t end = clock();
 	logf("   %g ms\n", (end - start) * 1000.0 / (double)CLOCKS_PER_SEC);
 	for (uint32_t i = 0; i < atlas->meshCount; i++) {
-		const xatlas::Mesh &mesh = atlas->meshes[i];
-		const tinyobj::mesh_t &objMesh = shapes[i].mesh;
+		const xatlas::Mesh& mesh = atlas->meshes[i];
+		const tinyobj::mesh_t& objMesh = shapes[i].mesh;
 		if (useUvMesh) {
 			if (objMesh.texcoords.empty()) {
 				ASSERT(mesh.indexCount == 0);
-			} else {
+			}
+			else {
 				// Index count shouldn't change.
 				ASSERT(mesh.indexCount == objMesh.indices.size());
 			}
 			// Vertex count shouldn't change.
 			ASSERT(mesh.vertexCount == objMesh.texcoords.size() / 2);
-		} else {
+		}
+		else {
 			// Index count shouldn't change.
 			ASSERT(mesh.indexCount == objMesh.indices.size());
 			// Vertex count should be equal or greater.
 			ASSERT(mesh.vertexCount >= objMesh.positions.size() / 3);
 			// Index order should be preserved.
 			for (uint32_t j = 0; j < mesh.indexCount; j++) {
-				const xatlas::Vertex &vertex = mesh.vertexArray[mesh.indexArray[j]];
+				const xatlas::Vertex& vertex = mesh.vertexArray[mesh.indexArray[j]];
 				ASSERT(vertex.xref == objMesh.indices[j]);
 			}
 		}
@@ -163,7 +168,7 @@ bool generateAtlas(const char *filename, bool useUvMesh, AtlasResult *result)
 }
 
 #ifdef _MSC_VER
-void processFilesRecursive(const char *path, bool useUvMesh)
+void processFilesRecursive(const char* path, bool useUvMesh)
 {
 	WIN32_FIND_DATAA ffd;
 	const char lastChar = path[strlen(path) - 1];
@@ -180,8 +185,9 @@ void processFilesRecursive(const char *path, bool useUvMesh)
 				char childPath[256];
 				sprintf_s(childPath, sizeof(childPath), "%s%s/", cleanPath, ffd.cFileName);
 				processFilesRecursive(childPath, useUvMesh);
-			} else {
-				const char *dot = strrchr(ffd.cFileName, (int)'.');
+			}
+			else {
+				const char* dot = strrchr(ffd.cFileName, (int)'.');
 				if (!dot)
 					continue;
 				if (_strcmpi(dot + 1, "obj") != 0)
@@ -191,14 +197,13 @@ void processFilesRecursive(const char *path, bool useUvMesh)
 				if (!generateAtlas(filename, useUvMesh, nullptr))
 					exit(1);
 			}
-		}
-		while (FindNextFileA(hFind, &ffd) != 0);
+		} while (FindNextFileA(hFind, &ffd) != 0);
 		FindClose(hFind);
 	}
 }
 #endif
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 #ifdef _MSC_VER
 	if (fopen_s(&logFile, "test.log", "w") != 0)
@@ -208,7 +213,7 @@ int main(int argc, char **argv)
 #endif
 	xatlas::SetPrint(logf, false);
 	if (argc > 1) {
-		const char *searchPath = argv[1];
+		const char* searchPath = argv[1];
 		bool useUvMesh = false;
 		if (argc > 2 && strncmp(argv[1], "--uv", 4) == 0) {
 			useUvMesh = true;
@@ -221,7 +226,8 @@ int main(int argc, char **argv)
 		(void)useUvMesh;
 		logf("not implemented\n");
 #endif
-	} else {
+	}
+	else {
 		AtlasResult result;
 		if (generateAtlas(MODEL_PATH "cube.obj", false, &result)) {
 			ASSERT(result.chartCount == 6);
@@ -237,7 +243,7 @@ int main(int argc, char **argv)
 			ASSERT(result.chartCount == 2);
 		}
 		if (generateAtlas(MODEL_PATH "gazebo.obj", false, &result)) {
-			ASSERT(result.chartCount == 333);
+			ASSERT(result.chartCount == 332);
 		}
 		if (generateAtlas(MODEL_PATH "zero_area_face.obj", false, &result)) {
 			ASSERT(result.chartCount == 0);

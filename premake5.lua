@@ -93,6 +93,7 @@ project "xatlas_static"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	enablewarnings { "shadow" }
@@ -104,6 +105,7 @@ project "xatlas"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	enablewarnings { "shadow" }
@@ -130,6 +132,7 @@ project "test"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	sanitizer()
@@ -146,6 +149,7 @@ project "viewer"
 	language "C++"
 	cppdialect "C++14"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	sanitizer()
@@ -185,6 +189,7 @@ project "example"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	sanitizer()
@@ -213,6 +218,7 @@ project "example_uvmesh"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	warnings "Extra"
 	sanitizer()
@@ -231,6 +237,7 @@ project "bgfx"
 	language "C++"
 	cppdialect "C++14"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	defines	{ "__STDC_FORMAT_MACROS" }
@@ -274,6 +281,7 @@ project "bimg"
 	language "C++"
 	cppdialect "C++14"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	defines
@@ -302,6 +310,7 @@ project "bx"
 	language "C++"
 	cppdialect "C++14"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	defines	{ "__STDC_FORMAT_MACROS" }
@@ -341,6 +350,7 @@ project "enkiTS"
 	language "C++"
 	cppdialect "C++11"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	files(path.join(ENKITS_DIR, "*.*"))
@@ -392,6 +402,7 @@ project "imgui"
 	kind "StaticLib"
 	language "C++"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	files(path.join(THIRDPARTY_DIR, "imgui/*.*"))
@@ -413,6 +424,7 @@ project "nativefiledialog"
 	kind "StaticLib"
 	language "C++"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	includedirs(path.join(NATIVEFILEDIALOG_DIR, "include"))
@@ -437,6 +449,7 @@ project "OpenFBX"
 	language "C++"
 	cppdialect "C++14"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	files(path.join(OPENFBX_DIR, "*.*"))
@@ -463,6 +476,7 @@ project "tiny_obj_loader"
 	kind "StaticLib"
 	language "C++"
 	exceptionhandling "Off"
+	justmycode "Off"
 	rtti "Off"
 	sanitizer()
 	files(path.join(THIRDPARTY_DIR, "tiny_obj_loader.*"))
