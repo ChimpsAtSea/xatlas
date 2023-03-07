@@ -90,7 +90,7 @@ type* name;
 #define XATLAS_VECTOR_RESIZE(name, num_elements) \
 ( \
 	XATLAS_VECTOR_REALLOC(name, num_elements), \
-	(num_elements) > name##_vector.size ? memset(name + name##_vector.size, 0, sizeof(*name) * ((num_elements)-name##_vector.size)) : (void)0, \
+	(num_elements) > name##_vector.size ? (void)memset(name + name##_vector.size, 0, sizeof(*name) * ((num_elements)-name##_vector.size)) : (void)0, \
 	name##_vector.size = (num_elements), \
 	name \
 )
